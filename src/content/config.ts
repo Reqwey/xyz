@@ -10,7 +10,6 @@ const postsCollection = defineCollection({
     cover: z.string().optional(),
     category: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    comments: z.boolean().default(true),
     draft: z.boolean().default(false),
     sticky: z.number().default(0),
   }),
@@ -31,7 +30,6 @@ const specCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    comments: z.boolean().default(true),
   }),
 })
 

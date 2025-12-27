@@ -1,6 +1,6 @@
 import { BluredBackground } from './BluredBackground'
 import { HeaderContent } from './HeaderContent'
-import { SearchButton } from './SearchButton'
+import { GitHubIconButton } from './GitHubIconButton'
 import { AnimatedLogo } from './AnimatedLogo'
 import { HeaderMeta } from './HeaderMeta'
 import { HeaderDrawer } from './HeaderDrawer'
@@ -21,7 +21,7 @@ export function Header() {
           <HeaderMeta />
         </div>
         <div className="flex items-center justify-center">
-          <SearchButton />
+          <GitHubIconButton />
         </div>
       </div>
     </header>

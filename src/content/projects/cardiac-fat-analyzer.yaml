@@ -1,0 +1,4 @@
+title: 心脏脂肪智能分割工具
+description: 附属仁济医院科研项目，使用 PyTorch 和 ViT 架构结合 U-Net 实现的心脏脂肪智能分割工具。
+image: /avatar.jpg
+link: https://reqwey.xyz/cardiac
