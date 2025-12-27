@@ -18,7 +18,7 @@
   },
   "hero": {
     "name": "Reqwey",
-    "description": "这世界麻木不仁，爱自己才是最小范围的共产主义。",
+    "description": "这里是我的自留地，记录生活与学习的点滴。",
     "socials": [
       {
         "name": "Github",
@@ -33,7 +33,7 @@
         "color": "rgb(212, 70, 56)"
       }
     ],
-    "yiyan": "很高兴遇见你。"
+    "yiyan": "爱自己，才是最小范围的共产主义。"
   },
   "color": {
     "accent": [{ "light": "#9F44D3", "dark": "#E2B0FF" }],
@@ -80,7 +80,7 @@
     "perPage": 10
   },
   "footer": {
-    "startTime": "2025-12-28T00:00:00Z"
+    "startTime": "2025-12-27T00:00:00Z"
   },
   "analytics": {
     "enable": false,
