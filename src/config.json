@@ -36,17 +36,37 @@
     "yiyan": "爱自己，才是最小范围的共产主义。"
   },
   "color": {
-    "accent": [{ "light": "#9F44D3", "dark": "#E2B0FF" }],
+    "accent": [
+      {
+        "light": "#9F44D3",
+        "dark": "#E2B0FF"
+      }
+    ],
     "bg": {
-      "primary": { "light": "#f3f6f7", "dark": "#1c1c1e" },
-      "secondary": { "light": "#f4f4f5", "dark": "#27272a" }
+      "primary": {
+        "light": "#f3f6f7",
+        "dark": "#1c1c1e"
+      },
+      "secondary": {
+        "light": "#f4f4f5",
+        "dark": "#27272a"
+      }
     },
     "text": {
-      "primary": { "light": "#373a3c", "dark": "#ffffff" },
-      "secondary": { "light": "#71717a", "dark": "#d1d5db" }
+      "primary": {
+        "light": "#373a3c",
+        "dark": "#ffffff"
+      },
+      "secondary": {
+        "light": "#71717a",
+        "dark": "#d1d5db"
+      }
     },
     "border": {
-      "primary": { "light": "#e4e4e7", "dark": "#3f3f46" }
+      "primary": {
+        "light": "#e4e4e7",
+        "dark": "#3f3f46"
+      }
     }
   },
   "menus": [
@@ -59,6 +79,11 @@
       "name": "归档",
       "link": "/archives",
       "icon": "icon-archive"
+    },
+    {
+      "name": "课程",
+      "link": "/courses",
+      "icon": "icon-calendar"
     },
     {
       "name": "项目",

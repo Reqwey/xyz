@@ -1,0 +1,17 @@
+---
+// src/pages/index.astro
+import PageLayout from '@/layouts/PageLayout.astro'
+import Highlight from '@/components/Highlight.astro'
+import CourseQueryPage from '@/components/course/CourseQueryPage'
+---
+
+<PageLayout title="SHSMU 课程表">
+  <div class="max-w-[1100px] mx-auto px-4 py-16">
+    <header class="space-y-4 mb-8">
+      <h1 class="text-4xl font-bold">
+        <Highlight>SHSMU 课程表</Highlight>
+      </h1>
+    </header>
+    <CourseQueryPage client:load />
+  </div>
+</PageLayout>

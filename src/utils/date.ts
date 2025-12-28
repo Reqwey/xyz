@@ -1,3 +1,53 @@
+import type { DateRange, ViewType } from '@/types/course'
+
+export const getDateRange = (view: ViewType): DateRange => {
+  const now = new Date()
+  const year = now.getUTCFullYear()
+  const month = now.getUTCMonth()
+  const date = now.getUTCDate()
+
+  if (view === 'day') {
+    const start = new Date(Date.UTC(year, month, date))
+    const end = new Date(Date.UTC(year, month, date))
+    end.setUTCDate(start.getUTCDate() + 1)
+    return {
+      start: start.toISOString().split('T')[0],
+      end: end.toISOString().split('T')[0],
+    }
+  }
+
+  if (view === 'week') {
+    const day = now.getUTCDay()
+    const diff = now.getUTCDate() - day + (day === 0 ? 0 : 7)
+    const sunday = new Date(Date.UTC(year, month, diff))
+    const nextSunday = new Date(sunday)
+    nextSunday.setUTCDate(sunday.getUTCDate() + 7)
+    return {
+      start: sunday.toISOString().split('T')[0],
+      end: nextSunday.toISOString().split('T')[0],
+    }
+  }
+
+  if (view === 'month') {
+    const firstDay = new Date(Date.UTC(year, month, 1))
+    const lastDay = new Date(Date.UTC(year, month + 1, 0))
+    lastDay.setUTCDate(lastDay.getUTCDate() + 1)
+    return {
+      start: firstDay.toISOString().split('T')[0],
+      end: lastDay.toISOString().split('T')[0],
+    }
+  }
+
+  return { start: '', end: '' }
+}
+
+export const dayNames = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
+
+export const getDayName = (dateString?: string): string => {
+  const date = dateString ? new Date(dateString) : new Date()
+  return dayNames[date.getDay()]
+}
+
 // 获取两个日期的相对时间
 export function getRelativeTime(startDate: Date, endDate = new Date()) {
   const diffSeconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000)
@@ -22,14 +72,22 @@ export function getRelativeTime(startDate: Date, endDate = new Date()) {
   return null
 }
 
+export function isSameDay(date1: Date, date2 = new Date()) {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  )
+}
+
 // 获取一个格式化的日期，格式为：2024 年 1 月 1 日 星期一
-export function getFormattedDate(date: Date) {
+export function getFormattedDate(date: Date, withWeek = true) {
   const year = date.getFullYear() % 100
   const month = date.getMonth() + 1
   const day = date.getDate()
-  const week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'][date.getDay()]
+  const week = dayNames[date.getDay()]
 
-  return `${year} 年 ${month} 月 ${day} 日 ${week}`
+  return `${year} 年 ${month} 月 ${day} 日 ${withWeek ? week : ''}`
 }
 
 // 数字前补 0
