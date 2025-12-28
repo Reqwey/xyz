@@ -50,7 +50,7 @@ const CourseTable: React.FC<CourseTableProps> = ({ view, courseData, loading, er
             <div className="inset-0 rounded-lg bg-accent/10 p-4 border border-primary flex flex-col space-y-2">
               <h2 className="relative font-bold flex items-center text-lg text-primary">
                 {course.Curriculum}
-                <span className="bg-accent text-white px-1 ml-2 rounded-full text-xs font-normal">
+                <span className="bg-accent/10 text-accent px-1 ml-2 rounded-full text-xs font-normal">
                   {course.CurriculumType}
                 </span>
               </h2>
