@@ -2,39 +2,39 @@ import type { DateRange, ViewType } from '@/types/course'
 
 export const getDateRange = (view: ViewType): DateRange => {
   const now = new Date()
-  const year = now.getUTCFullYear()
-  const month = now.getUTCMonth()
-  const date = now.getUTCDate()
+  const year = now.getFullYear()
+  const month = now.getMonth()
+  const date = now.getDate()
 
   if (view === 'day') {
-    const start = new Date(Date.UTC(year, month, date))
-    const end = new Date(Date.UTC(year, month, date))
-    end.setUTCDate(start.getUTCDate() + 1)
+    const start = new Date(year, month, date)
+    const end = new Date(year, month, date)
+    end.setDate(start.getDate() + 1)
     return {
-      start: start.toISOString().split('T')[0],
-      end: end.toISOString().split('T')[0],
+      start: start.toLocaleDateString(),
+      end: end.toLocaleDateString(),
     }
   }
 
   if (view === 'week') {
-    const day = now.getUTCDay()
-    const diff = now.getUTCDate() - day + (day === 0 ? 0 : 7)
-    const sunday = new Date(Date.UTC(year, month, diff))
+    const day = now.getDay()
+    const diff = now.getDate() - day
+    const sunday = new Date(year, month, diff)
     const nextSunday = new Date(sunday)
-    nextSunday.setUTCDate(sunday.getUTCDate() + 7)
+    nextSunday.setDate(sunday.getDate() + 7)
     return {
-      start: sunday.toISOString().split('T')[0],
-      end: nextSunday.toISOString().split('T')[0],
+      start: sunday.toLocaleDateString(),
+      end: nextSunday.toLocaleDateString(),
     }
   }
 
   if (view === 'month') {
-    const firstDay = new Date(Date.UTC(year, month, 1))
-    const lastDay = new Date(Date.UTC(year, month + 1, 0))
-    lastDay.setUTCDate(lastDay.getUTCDate() + 1)
+    const firstDay = new Date(year, month, 1)
+    const lastDay = new Date(year, month + 1, 0)
+    lastDay.setDate(lastDay.getDate() + 1)
     return {
-      start: firstDay.toISOString().split('T')[0],
-      end: lastDay.toISOString().split('T')[0],
+      start: firstDay.toLocaleDateString(),
+      end: lastDay.toLocaleDateString(),
     }
   }
 
