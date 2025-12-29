@@ -27,11 +27,11 @@
 }
 
 .markdown a {
-  @apply font-normal text-accent hover:underline underline-offset-2;
+  @apply break-words font-normal text-accent hover:underline underline-offset-2;
 }
 
 .markdown a + .icon-external-link {
-  @apply text-secondary ml-1;
+  @apply break-words text-secondary ml-1;
 }
 
 .markdown blockquote {
@@ -51,7 +51,7 @@
 }
 
 .markdown :not(pre) > code {
-  @apply px-2 py-1 rounded bg-secondary text-sm font-semibold;
+  @apply break-words px-2 py-1 rounded bg-secondary text-sm font-semibold;
 }
 
 .markdown .code-block {
