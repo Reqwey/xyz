@@ -77,7 +77,7 @@ const CourseQueryPage: React.FC = () => {
               handleSubmit()
             }
           }}
-          placeholder="wengin_vpn_ticket"
+          placeholder="wengin_vpn_ticketwebvpn2_shsmu_edu_cn"
           className="w-full px-2 py-1 bg-transparent text-sm border border-primary rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
         />
       </div>
