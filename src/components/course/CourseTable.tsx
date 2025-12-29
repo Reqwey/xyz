@@ -155,32 +155,12 @@ const CourseTable: React.FC<CourseTableProps> = ({ view, courseData, loading, er
     let coursesPerMonthDay: { date: Date; events: ApiCourseItem[] }[] = []
     const startDate = new Date(range.start)
     const endDate = new Date(range.end)
-    let missingDays = new Date(startDate).getDay()
-    for (let d = 0; d < missingDays; d++) {
-      const prevDay = new Date(startDate)
-      prevDay.setDate(prevDay.getDate() - (missingDays - d))
-      coursesPerMonthDay.push({
-        date: prevDay,
-        events: [],
-      })
-    }
     for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
       const dayCourses = courseData.List.filter((course) => isSameDay(new Date(course.Start), d))
       coursesPerMonthDay.push({
         date: new Date(d),
         events: dayCourses,
       })
-    }
-    let extraDays = 7 - (coursesPerMonthDay.length % 7)
-    if (extraDays < 7) {
-      for (let d = 1; d <= extraDays; d++) {
-        const nextDay = new Date(endDate)
-        nextDay.setDate(nextDay.getDate() + d)
-        coursesPerMonthDay.push({
-          date: nextDay,
-          events: [],
-        })
-      }
     }
     return (
       <div className="grid grid-cols-7 gap-1">

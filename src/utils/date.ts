@@ -30,8 +30,9 @@ export const getDateRange = (view: ViewType): DateRange => {
 
   if (view === 'month') {
     const firstDay = new Date(year, month, 1)
+    firstDay.setDate(firstDay.getDate() - firstDay.getDay()) // 补齐上个月的天数
     const lastDay = new Date(year, month + 1, 0)
-    lastDay.setDate(lastDay.getDate() + 1)
+    lastDay.setDate(lastDay.getDate() + 6 - lastDay.getDay()) // 补齐下个月的天数
     return {
       start: firstDay.toLocaleDateString(),
       end: lastDay.toLocaleDateString(),
