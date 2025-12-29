@@ -10,7 +10,7 @@ const CourseQueryPage: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('day')
   const [courseData, setCourseData] = useState<ApiResponse>()
   const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<boolean>(false)
   const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null)
 
   const viewList: { type: ViewType; name: string }[] = [
@@ -26,7 +26,7 @@ const CourseQueryPage: React.FC = () => {
     }
 
     setLoading(true)
-    setError(null)
+    setError(false)
 
     try {
       const dateRange = getDateRange(currentView)
@@ -43,7 +43,7 @@ const CourseQueryPage: React.FC = () => {
       setShsmuCookie(cookie)
     } catch (err) {
       console.error('请求失败:', err)
-      setError(err instanceof Error ? err.message : '未知错误')
+      setError(true)
       setCourseData(undefined)
     } finally {
       setLoading(false)
@@ -148,6 +148,15 @@ const CourseQueryPage: React.FC = () => {
         )}
       </div>
       <CourseTable view={currentView} courseData={courseData} loading={loading} error={error} />
+      <div className="mt-4 flex items-center justify-center">
+        <a
+          className="bg-accent/10 text-accent px-3 py-1 rounded-full text-sm transition hover:bg-accent/30 flex items-center gap-2"
+          href="/posts/shsmu-curriculum"
+        >
+          <i className="iconfont icon-info"></i>
+          查看获取 Cookie 教程
+        </a>
+      </div>
     </div>
   )
 }

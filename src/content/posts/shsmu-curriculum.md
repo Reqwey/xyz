@@ -15,21 +15,17 @@ tags: [教务, Node.js, 网络爬虫]
 
 基于此，我开发了这个工具，只需要获取一张网络饼干，就能持久地获取本日/周/月的课表！
 
-### 准备工作
-
-1. 请先确保不处于医学院校园网环境：\
-   如果您在校内使用手机，请关闭 Wi-Fi，使用移动数据上网。\
-   如果您在宿舍内使用电脑，请断开网线，使用手机热点上网。\
-   如果您不在校内，请忽略该步骤。
-2. 确保您拥有查看网页 Cookie 的能力：\
-   Cookie 是网站识别用户的特别身份证。\
-   如果您在使用安卓手机，请下载 [Kiwi Browser](https://pan.sjtu.edu.cn/web/share/34797e27c78a91d9ce1e97b0b75f5d38), 提取码: 1ujz。\
-   如果您在使用 iPhone，请下载 [适用于 Safari 的 Web Inspector 扩展](https://apps.apple.com/cn/app/web-inspector/id1584825745) \
-   如果您在使用电脑，请确保使用主流浏览器。
-
 ### 获取 Cookie
 
-访问 <https://auth2.shsmu.edu.cn/cas/login?service=https%3a%2f%2fjwstu.shsmu.edu.cn%2fLogin%2fauthLogin> 并登录。
+Cookie 是网站识别用户的特别身份证。
+
+确保您拥有查看网页 Cookie 的能力：
+
+- 如果您在使用安卓手机，请下载 [Kiwi Browser](https://pan.sjtu.edu.cn/web/share/34797e27c78a91d9ce1e97b0b75f5d38), 提取码: `1ujz`；
+- 如果您在使用 iPhone，请下载 [适用于 Safari 的 Web Inspector 扩展](https://apps.apple.com/cn/app/web-inspector/id1584825745)；
+- 如果您在使用电脑，请确保使用主流浏览器。
+
+访问 <https://webvpn2.shsmu.edu.cn/https/77726476706e69737468656265737421fae05288327e7b586d059ce29d51367b9aac/Home> 并登录。
 
 打开浏览器开发者工具：这里以 macOS 上的 Zen Browser 和 Android 上的 Kiwi Browser 为例：
 

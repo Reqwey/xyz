@@ -54,5 +54,5 @@ export interface CourseTableProps {
   view: ViewType
   courseData: ApiResponse | undefined
   loading: boolean
-  error: string | null
+  error: boolean
 }

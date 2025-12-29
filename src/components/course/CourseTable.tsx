@@ -15,9 +15,20 @@ const CourseTable: React.FC<CourseTableProps> = ({ view, courseData, loading, er
 
   if (error) {
     return (
-      <div className="text-center py-16 text-red-600">
-        <i className="iconfont icon-error text-5xl"></i>
-        <p className="font-medium">请求失败: {error}</p>
+      <div className="flex flex-col items-center justify-center gap-2">
+        <i className="iconfont icon-error text-5xl text-red-600"></i>
+        <p className="font-medium markdown text-red-600">
+          Cookie 不可用
+          <a
+            className="ml-2"
+            href="https://webvpn2.shsmu.edu.cn/https/77726476706e69737468656265737421fae05288327e7b586d059ce29d51367b9aac/Home"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            重新登录
+          </a>
+          <i className="iconfont icon-external-link"></i>
+        </p>
       </div>
     )
   }
