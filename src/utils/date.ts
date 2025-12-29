@@ -1,6 +1,6 @@
 import type { DateRange, ViewType } from '@/types/course'
 
-export const getDateRange = (view: ViewType): DateRange => {
+export const getDateRange = (view: ViewType, monthOffset: number): DateRange => {
   const now = new Date()
   const year = now.getFullYear()
   const month = now.getMonth()
@@ -29,9 +29,9 @@ export const getDateRange = (view: ViewType): DateRange => {
   }
 
   if (view === 'month') {
-    const firstDay = new Date(year, month, 1)
+    const firstDay = new Date(year, month + monthOffset, 1)
     firstDay.setDate(firstDay.getDate() - firstDay.getDay()) // 补齐上个月的天数
-    const lastDay = new Date(year, month + 1, 0)
+    const lastDay = new Date(year, month + monthOffset + 1, 0)
     lastDay.setDate(lastDay.getDate() + 6 - lastDay.getDay()) // 补齐下个月的天数
     return {
       start: firstDay.toLocaleDateString(),

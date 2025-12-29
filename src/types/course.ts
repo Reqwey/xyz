@@ -53,6 +53,7 @@ export interface DateRange {
 export interface CourseTableProps {
   view: ViewType
   courseData: ApiResponse | undefined
+  monthOffset: number
   loading: boolean
   error: boolean
 }

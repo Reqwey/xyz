@@ -3,7 +3,13 @@ import type { ApiCourseItem, CourseTableProps } from '@/types/course'
 import { isSameDay, getDateRange, getDayName, getFormattedDate } from '@/utils/date'
 import { dayNames } from '@/utils/date'
 
-const CourseTable: React.FC<CourseTableProps> = ({ view, courseData, loading, error }) => {
+const CourseTable: React.FC<CourseTableProps> = ({
+  view,
+  courseData,
+  monthOffset,
+  loading,
+  error,
+}) => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
@@ -41,7 +47,7 @@ const CourseTable: React.FC<CourseTableProps> = ({ view, courseData, loading, er
     )
   }
 
-  let range = getDateRange(view)
+  let range = getDateRange(view, monthOffset)
   // 日视图
   if (view === 'day') {
     const filteredCourses = courseData.List.filter((course) => isSameDay(new Date(course.Start)))
@@ -194,21 +200,25 @@ const CourseTable: React.FC<CourseTableProps> = ({ view, courseData, loading, er
             >
               {course.date.getDate()}
             </span>
-            <ul className="space-y-1">
-              {course.events.map((event, idx) => (
-                <li
-                  key={idx}
-                  className="bg-white/50 dark:bg-zinc-800/50 px-1 py-1 rounded text-xs shadow-sm border-l-2 border-accent"
-                >
-                  {event.Curriculum}{' '}
-                  <div
-                    className={`text-[0.6rem] ${event.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'}`}
+            {course.events.length === 0 ? (
+              <p className="text-center text-xs text-secondary">无课程</p>
+            ) : (
+              <ul className="space-y-1">
+                {course.events.map((event, idx) => (
+                  <li
+                    key={idx}
+                    className="bg-white/50 dark:bg-zinc-800/50 px-1 py-1 rounded text-xs shadow-sm border-l-2 border-accent"
                   >
-                    {event.CurriculumType.slice(0, 2)}
-                  </div>
-                </li>
-              ))}
-            </ul>
+                    {event.Curriculum}{' '}
+                    <div
+                      className={`text-[0.6rem] ${event.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'}`}
+                    >
+                      {event.CurriculumType.slice(0, 2)}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         ))}
       </div>

@@ -12,6 +12,7 @@ const CourseQueryPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<boolean>(false)
   const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null)
+  const [monthOffset, setMonthOffset] = useState<number>(0)
 
   const viewList: { type: ViewType; name: string }[] = [
     { type: 'day', name: '日' },
@@ -29,7 +30,7 @@ const CourseQueryPage: React.FC = () => {
     setError(false)
 
     try {
-      const dateRange = getDateRange(currentView)
+      const dateRange = getDateRange(currentView, monthOffset)
       const url = `https://reqwey.xyz/api/curriculum?start=${dateRange.start}&end=${dateRange.end}&cookie=${encodeURIComponent(cookie.trim())}`
       const response = await fetch(url)
 
@@ -48,7 +49,7 @@ const CourseQueryPage: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }, [currentView, cookie])
+  }, [currentView, cookie, monthOffset])
 
   useEffect(() => {
     const storedCookie = getShsmuCookie()
@@ -58,8 +59,15 @@ const CourseQueryPage: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    setMonthOffset(0)
     handleSubmit()
   }, [currentView])
+
+  useEffect(() => {
+    if (currentView === 'month') {
+      handleSubmit()
+    }
+  }, [monthOffset])
 
   return (
     <div>
@@ -129,31 +137,59 @@ const CourseQueryPage: React.FC = () => {
             </>
           ) : (
             <>
-              <i className="iconfont icon-search"></i>
+              <i className="iconfont icon-search" />
               查询课程
             </>
           )}
         </button>
       </div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-bold">
-          {currentView === 'day'
-            ? '今日课程'
-            : currentView === 'week'
-              ? '本周课程'
-              : `${new Date().getMonth() + 1}月课程`}
-        </h2>
+        <div className="flex items-center justify-between gap-2">
+          {currentView === 'month' && courseData && (
+            <button
+              onClick={() => setMonthOffset(monthOffset - 1)}
+              className={
+                'px-2 py-1 rounded-full text-sm border border-primary bg-white/50 hover:bg-gray-300 dark:bg-zinc-800/50 hover:dark:bg-zinc-800 text-primary'
+              }
+            >
+              <i className="iconfont icon-left" />
+            </button>
+          )}
+          <h2 className="text-xl font-bold">
+            {currentView === 'day'
+              ? '今日课程'
+              : currentView === 'week'
+                ? '本周课程'
+                : `${((new Date().getMonth() + monthOffset) % 12) + 1}月课程`}
+          </h2>
+          {currentView === 'month' && courseData && (
+            <button
+              onClick={() => setMonthOffset(monthOffset + 1)}
+              className={
+                'px-2 py-1 rounded-full text-sm border border-primary bg-white/50 hover:bg-gray-300 dark:bg-zinc-800/50 hover:dark:bg-zinc-800 text-primary'
+              }
+            >
+              <i className="iconfont icon-right" />
+            </button>
+          )}
+        </div>
         {lastFetchTime && (
           <div className="text-xs text-secondary">最后更新: {lastFetchTime.toLocaleString()}</div>
         )}
       </div>
-      <CourseTable view={currentView} courseData={courseData} loading={loading} error={error} />
+      <CourseTable
+        view={currentView}
+        courseData={courseData}
+        monthOffset={monthOffset}
+        loading={loading}
+        error={error}
+      />
       <div className="mt-4 flex items-center justify-center">
         <a
           className="bg-accent/10 text-accent px-3 py-1 rounded-full text-sm transition hover:bg-accent/30 flex items-center gap-2"
           href="/posts/shsmu-curriculum"
         >
-          <i className="iconfont icon-info"></i>
+          <i className="iconfont icon-info" />
           查看获取 Cookie 教程
         </a>
       </div>
