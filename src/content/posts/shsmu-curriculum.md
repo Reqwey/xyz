@@ -6,6 +6,8 @@ category: 项目
 tags: [教务, Node.js, 网络爬虫]
 ---
 
+![UI](/shsmu-curriculum/ui.png)
+
 ## 食用介绍
 
 - 你是否为需要反复登录医学院教务系统，只为获取今日课表而苦恼？
