@@ -1,12 +1,20 @@
 // src/components/CourseQueryPage.tsx
 import React, { useEffect, useState, useCallback } from 'react'
-import CourseTable from './CourseTable'
+import CourseTable from '@/components/course/CourseTable'
 import type { ViewType, ApiResponse } from '@/types/course'
 import { getDateRange } from '@/utils/date'
-import { getShsmuCookie, setShsmuCookie } from '@/utils/course'
+import {
+  getShsmuCookie,
+  getShsmuCredentials,
+  setShsmuCookie,
+  setShsmuCredentials,
+} from '@/utils/course'
+
+const API_BASE_URL = 'https://reqwey.xyz/api/shsmu'
 
 const CourseQueryPage: React.FC = () => {
-  const [cookie, setCookie] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
   const [currentView, setCurrentView] = useState<ViewType>('day')
   const [courseData, setCourseData] = useState<ApiResponse>()
   const [loading, setLoading] = useState<boolean>(false)
@@ -22,26 +30,65 @@ const CourseQueryPage: React.FC = () => {
 
   // 提交查询处理
   const handleSubmit = useCallback(async () => {
-    if (!cookie.trim()) {
+    if (!username || !password) {
       return
     }
 
     setLoading(true)
     setError(false)
 
-    try {
-      const dateRange = getDateRange(currentView, monthOffset)
-      const url = `https://reqwey.xyz/api/curriculum?start=${dateRange.start}&end=${dateRange.end}&cookie=${encodeURIComponent(cookie.trim())}`
-      const response = await fetch(url)
+    const fetchCookie = async (): Promise<string> => {
+      let loginResponse = await fetch(`${API_BASE_URL}/login`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+      })
+      if (!loginResponse.ok) {
+        throw new Error(`HTTP ${loginResponse.status}: ${loginResponse.statusText}`)
+      }
 
+      const loginData = await loginResponse.json()
+      let newCookie = loginData.cookies.wengine_vpn_ticketwebvpn2_shsmu_edu_cn
+      if (!newCookie) throw new Error('Cannot parse cookie')
+      return newCookie
+    }
+
+    const fetchCurriculum = async (
+      start: string,
+      end: string,
+      cookie: string,
+    ): Promise<ApiResponse> => {
+      let response = await fetch(
+        `${API_BASE_URL}/curriculum?start=${start.replaceAll('/', '-')}&end=${end.replaceAll('/', '-')}&cookie=${encodeURIComponent(cookie.trim())}`,
+      )
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
-
       const data = await response.json()
-      setCourseData(data)
-      setLastFetchTime(new Date())
+      return data
+    }
+
+    try {
+      const dateRange = getDateRange(currentView, monthOffset)
+      let cookie = getShsmuCookie()
+      if (!cookie) {
+        cookie = await fetchCookie()
+      } else {
+        try {
+          await fetchCurriculum(dateRange.start, dateRange.start, cookie) // This range is intended to test if cookie is valid
+        } catch {
+          cookie = await fetchCookie()
+        }
+      }
+
+      setShsmuCredentials(username, password)
       setShsmuCookie(cookie)
+
+      const curriculumData = await fetchCurriculum(dateRange.start, dateRange.end, cookie)
+      setCourseData(curriculumData)
+      setLastFetchTime(new Date())
     } catch (err) {
       console.error('请求失败:', err)
       setError(true)
@@ -49,12 +96,15 @@ const CourseQueryPage: React.FC = () => {
     } finally {
       setLoading(false)
     }
-  }, [currentView, cookie, monthOffset])
+  }, [username, password, currentView, monthOffset])
 
   useEffect(() => {
-    const storedCookie = getShsmuCookie()
-    if (storedCookie) {
-      setCookie(storedCookie)
+    const { username: storedUsername, password: storedPassword } = getShsmuCredentials()
+    if (storedUsername) {
+      setUsername(storedUsername)
+    }
+    if (storedPassword) {
+      setPassword(storedPassword)
     }
   }, [])
 
@@ -71,24 +121,38 @@ const CourseQueryPage: React.FC = () => {
 
   return (
     <div>
-      <div className="mb-6">
-        <label htmlFor="cookie" className="block text-sm font-medium text-secondary mb-2">
-          Cookie
-        </label>
-        <input
-          type="password"
-          id="cookie"
-          value={cookie}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCookie(e.target.value)}
-          onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter') {
-              handleSubmit()
-            }
-          }}
-          placeholder="wengin_vpn_ticketwebvpn2_shsmu_edu_cn"
-          className="w-full px-2 py-1 bg-transparent text-sm border border-primary rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
-        />
-      </div>
+      <form
+        className="mb-6 flex flex-col items-stretch justify-between gap-4"
+        onSubmit={(e) => {
+          e.preventDefault()
+          handleSubmit()
+        }}
+      >
+        <div className="flex flex-col items-stretch justify-between gap-2">
+          <label htmlFor="username" className="block text-sm font-medium text-secondary">
+            用户名
+          </label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+            className="w-full h-8 px-2 bg-transparent text-sm border border-primary rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+          />
+        </div>
+        <div className="flex flex-col items-stretch justify-between gap-2">
+          <label htmlFor="password" className="block text-sm font-medium text-secondary">
+            密码
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+            className="w-full h-8 px-2 bg-transparent text-sm border border-primary rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+          />
+        </div>
+      </form>
       <div className="flex flex-col sm:flex-row gap-4 items-center justify-between mb-6">
         <div className="flex gap-2">
           {viewList.map((item, index) => (
@@ -184,15 +248,6 @@ const CourseQueryPage: React.FC = () => {
         loading={loading}
         error={error}
       />
-      <div className="mt-4 flex items-center justify-center">
-        <a
-          className="bg-accent/10 text-accent px-3 py-1 rounded-full text-sm transition hover:bg-accent/30 flex items-center gap-2"
-          href="/posts/shsmu-curriculum"
-        >
-          <i className="iconfont icon-info" />
-          查看获取 Cookie 教程
-        </a>
-      </div>
     </div>
   )
 }
