@@ -55,5 +55,5 @@ export interface CourseTableProps {
   courseData: ApiResponse | undefined
   monthOffset: number
   loading: boolean
-  error: boolean
+  error: string | null
 }

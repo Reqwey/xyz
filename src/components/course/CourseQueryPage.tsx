@@ -18,7 +18,7 @@ const CourseQueryPage: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('day')
   const [courseData, setCourseData] = useState<ApiResponse>()
   const [loading, setLoading] = useState<boolean>(false)
-  const [error, setError] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
   const [lastFetchTime, setLastFetchTime] = useState<Date | null>(null)
   const [monthOffset, setMonthOffset] = useState<number>(0)
 
@@ -35,7 +35,7 @@ const CourseQueryPage: React.FC = () => {
     }
 
     setLoading(true)
-    setError(false)
+    setError(null)
 
     const fetchCookie = async (): Promise<string> => {
       let loginResponse = await fetch(`${API_BASE_URL}/login`, {
@@ -82,16 +82,14 @@ const CourseQueryPage: React.FC = () => {
           cookie = await fetchCookie()
         }
       }
-
-      setShsmuCredentials(username, password)
-      setShsmuCookie(cookie)
-
       const curriculumData = await fetchCurriculum(dateRange.start, dateRange.end, cookie)
       setCourseData(curriculumData)
       setLastFetchTime(new Date())
+      setShsmuCredentials(username, password)
+      setShsmuCookie(cookie)
     } catch (err) {
       console.error('请求失败:', err)
-      setError(true)
+      setError(err instanceof Error ? err.message : '未知错误')
       setCourseData(undefined)
     } finally {
       setLoading(false)
