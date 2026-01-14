@@ -30,7 +30,7 @@ const { title, description, image, mdTitle, mdDescription, mdSlug } = Astro.prop
   <Header client:only="react" />
   <main class="relative z-1 pt-16 min-h-main bg-primary">
     <HeadGradient client:idle />
-    <div class="swup-transition-fade">
+    <div class="swup-transition-fade w-[100%] max-w-[100%] overflow-hidden whitespace-normal">
       <slot />
     </div>
   </main>

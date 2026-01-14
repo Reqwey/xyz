@@ -1,3 +1,7 @@
+#markdown-wrapper {
+  @apply overflow-hidden whitespace-normal;
+}
+
 .markdown > :first-child {
   @apply mt-0;
 }
@@ -162,4 +166,8 @@
 
 .markdown h4 + * {
   @apply mt-0;
+}
+
+.markdown .katex-display {
+  @apply overflow-auto py-5;
 }
