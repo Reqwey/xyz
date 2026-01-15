@@ -143,7 +143,7 @@ const CourseTable: React.FC<CourseTableProps> = ({
                           course.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'
                         }`}
                       >
-                        {course.CurriculumType.slice(0, 2)}
+                        {`(${course.CurriculumType.slice(0, 2)})`}
                       </div>
                       <hr />
                       <div className="text-[0.5rem] text-secondary">
@@ -204,9 +204,9 @@ const CourseTable: React.FC<CourseTableProps> = ({
                   >
                     {event.Curriculum}{' '}
                     <div
-                      className={`text-[0.6rem] ${event.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'}`}
+                      className={`inline-block text-[0.6rem] ${event.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'}`}
                     >
-                      {event.CurriculumType.slice(0, 2)}
+                      {`(${event.CurriculumType.slice(0, 2)})`}
                     </div>
                     <hr />
                     <div className="text-[0.5rem] text-secondary">
