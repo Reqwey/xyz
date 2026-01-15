@@ -23,9 +23,7 @@ const CourseTable: React.FC<CourseTableProps> = ({
     return (
       <div className="flex flex-col items-center justify-center gap-2">
         <i className="iconfont icon-error text-5xl text-red-600"></i>
-        <p className="font-medium markdown text-red-600">
-          {error}
-        </p>
+        <p className="font-medium markdown text-red-600">{error}</p>
       </div>
     )
   }
@@ -37,6 +35,15 @@ const CourseTable: React.FC<CourseTableProps> = ({
       </div>
     )
   }
+
+  let timeStr = (start: string, end: string) =>
+    `${new Date(start).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })} ~ ${new Date(end).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`
 
   let range = getDateRange(view, monthOffset)
   // 日视图
@@ -68,13 +75,7 @@ const CourseTable: React.FC<CourseTableProps> = ({
                 )}
                 <div className="flex items-center gap-1">
                   <i className="iconfont icon-timer"></i>
-                  {`${new Date(course.Start).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })} ~ ${new Date(course.End).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })}`}
+                  {timeStr(course.Start, course.End)}
                 </div>
                 <div className="flex items-center gap-1">
                   <i className="iconfont icon-map"></i>
@@ -136,16 +137,17 @@ const CourseTable: React.FC<CourseTableProps> = ({
                       key={idx}
                       className="bg-white/50 dark:bg-zinc-800/50 px-1 py-1 rounded text-xs shadow-sm border-l-2 border-accent"
                     >
-                      {course.Curriculum}
-                      <div className="flex items-center gap-1">
-                        <div
-                          className={`inline-block text-[0.6rem] ${
-                            course.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'
-                          }`}
-                        >
-                          {course.CurriculumType.slice(0, 2)}
-                        </div>
-                        <div className="inline-block text-[0.6rem] text-secondary">{`${course.CourseCount}节`}</div>
+                      {course.Curriculum}{' '}
+                      <div
+                        className={`inline-block text-[0.6rem] ${
+                          course.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'
+                        }`}
+                      >
+                        {course.CurriculumType.slice(0, 2)}
+                      </div>
+                      <hr />
+                      <div className="text-[0.5rem] text-secondary">
+                        {timeStr(course.Start, course.End)}
                       </div>
                     </li>
                   ))}
@@ -205,6 +207,10 @@ const CourseTable: React.FC<CourseTableProps> = ({
                       className={`text-[0.6rem] ${event.CurriculumType === '考试' ? 'text-red-500' : 'text-secondary'}`}
                     >
                       {event.CurriculumType.slice(0, 2)}
+                    </div>
+                    <hr />
+                    <div className="text-[0.5rem] text-secondary">
+                      {timeStr(event.Start, event.End)}
                     </div>
                   </li>
                 ))}
