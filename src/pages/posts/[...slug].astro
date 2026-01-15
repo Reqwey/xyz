@@ -84,7 +84,7 @@ const lastMod = current.data.lastMod || current.data.date
         </div>
       </header>
     </div>
-    <div class="col-start-1 min-w-0 overflow-hidden relative w-[100%]">
+    <div class="col-start-1 min-w-0 overflow-hidden relative w-full">
       <MarkdownWrapper>
         <Content />
       </MarkdownWrapper>
@@ -93,14 +93,14 @@ const lastMod = current.data.lastMod || current.data.date
       <aside class="sticky top-20">
         <SectionBlock title="目录">
           <PostToc headings={headings} client:idle />
-          <hr class="my-2 border-primary max-w-[100px]" />
+          <hr class="my-2 border-primary max-w-full" />
           <ReadingProgress client:idle />
         </SectionBlock>
         <ActionAside client:idle />
       </aside>
     </div>
     <div class="min-w-0 overflow-hidden">
-      <section class="space-y-6">
+      <section class="space-y-6 w-full">
         <PostCopyright title={current.data.title} slug={mdSlug} lastMod={lastMod} client:visible />
         <PostNav prev={prev} next={next} />
       </section>
